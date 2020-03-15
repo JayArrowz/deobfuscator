@@ -76,6 +76,7 @@ class Deobfuscator : CliktCommand(
         run { FieldSorter() }
         run { StaticFieldInliner() }
         run { GotoRemover() }
+        run { RuntimeExceptionRemover() }
 
         Logger.info("Finished running class transformers.")
     }
