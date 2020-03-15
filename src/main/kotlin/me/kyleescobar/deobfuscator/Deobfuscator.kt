@@ -77,6 +77,7 @@ class Deobfuscator : CliktCommand(
         run { StaticFieldInliner() }
         run { GotoRemover() }
         run { RuntimeExceptionRemover() }
+        run { OpaquePredicateCheckRemover() }
 
         Logger.info("Finished running class transformers.")
     }
