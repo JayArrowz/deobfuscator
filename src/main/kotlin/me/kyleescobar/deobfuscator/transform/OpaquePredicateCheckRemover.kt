@@ -1,8 +1,8 @@
 package me.kyleescobar.deobfuscator.transform
 
 import me.kyleescobar.deobfuscator.asm.ClassGroup
-import me.kyleescobar.deobfuscator.constantIntProduced
-import me.kyleescobar.deobfuscator.isConstantIntProducer
+import me.kyleescobar.deobfuscator.asm.constantIntProduced
+import me.kyleescobar.deobfuscator.asm.isConstantIntProducer
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.Type

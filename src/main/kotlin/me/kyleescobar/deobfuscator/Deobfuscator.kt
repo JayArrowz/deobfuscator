@@ -9,6 +9,8 @@ import me.kyleescobar.deobfuscator.asm.export
 import me.kyleescobar.deobfuscator.asm.loadJar
 import me.kyleescobar.deobfuscator.transform.*
 import me.kyleescobar.deobfuscator.transform.controlflow.ControlFlow
+import me.kyleescobar.deobfuscator.transform.math.MultiplierFinder
+import me.kyleescobar.deobfuscator.transform.math.MultiplierRemover
 import org.tinylog.kotlin.Logger
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -72,12 +74,15 @@ class Deobfuscator : CliktCommand(
          */
         run { Renamer() }
         run { ControlFlow() }
+        run { MultiplierFinder() }
+        run { MultiplierRemover() }
         run { MethodSorter() }
         run { FieldSorter() }
         run { StaticFieldInliner() }
         run { GotoRemover() }
         run { RuntimeExceptionRemover() }
         run { OpaquePredicateCheckRemover() }
+        //run { OpaquePredicateArgumentRemover() }
 
         Logger.info("Finished running class transformers.")
     }
