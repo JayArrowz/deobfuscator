@@ -41,13 +41,10 @@ class Renamer : Transformer {
     private var fieldCounter = 0
 
     override fun transform(group: ClassGroup) {
-        Logger.info("Preparing to rename classes and entries.")
-
         this.buildHierarchy(group)
         this.generateMapping(group)
         this.applyMapping(group)
-
-        Logger.info("Finished renaming: [classes=$classCounter, methods=$methodCounter, fields=$fieldCounter].")
+        Logger.info("Renamed: [classes=$classCounter, methods=$methodCounter, fields=$fieldCounter].")
     }
 
     private fun buildHierarchy(group: ClassGroup) {

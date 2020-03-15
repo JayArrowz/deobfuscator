@@ -3,13 +3,16 @@ package me.kyleescobar.deobfuscator
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
+import com.google.common.base.Stopwatch
 import me.kyleescobar.deobfuscator.asm.emptyClassGroup
 import me.kyleescobar.deobfuscator.asm.export
 import me.kyleescobar.deobfuscator.asm.loadJar
 import me.kyleescobar.deobfuscator.transform.Renamer
 import me.kyleescobar.deobfuscator.transform.Transformer
+import me.kyleescobar.deobfuscator.transform.controlflow.ControlFlow
 import org.tinylog.kotlin.Logger
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 /**
  * Copyright (c) 2020 Kyle Escobar
@@ -64,6 +67,7 @@ class Deobfuscator : CliktCommand(
          * Run each transformer in order.
          */
         run { Renamer() }
+        run { ControlFlow() }
 
         Logger.info("Finished running class transformers.")
     }
@@ -75,6 +79,9 @@ class Deobfuscator : CliktCommand(
     }
 
     private fun run(transformer: () -> Transformer) {
+        val stopwatch = Stopwatch.createStarted()
+        Logger.info("Running transformer '${transformer().javaClass.simpleName}'.")
         transformer().transform(group)
+        Logger.info("Finished transformer '${transformer().javaClass.simpleName}' in ${stopwatch.stop().elapsed(TimeUnit.SECONDS)} seconds.")
     }
 }
