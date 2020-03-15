@@ -7,9 +7,7 @@ import com.google.common.base.Stopwatch
 import me.kyleescobar.deobfuscator.asm.emptyClassGroup
 import me.kyleescobar.deobfuscator.asm.export
 import me.kyleescobar.deobfuscator.asm.loadJar
-import me.kyleescobar.deobfuscator.transform.MethodSorter
-import me.kyleescobar.deobfuscator.transform.Renamer
-import me.kyleescobar.deobfuscator.transform.Transformer
+import me.kyleescobar.deobfuscator.transform.*
 import me.kyleescobar.deobfuscator.transform.controlflow.ControlFlow
 import org.tinylog.kotlin.Logger
 import java.io.File
@@ -48,11 +46,16 @@ class Deobfuscator : CliktCommand(
 
     private val group = emptyClassGroup()
 
+    private val stopwatch = Stopwatch.createStarted()
+
     override fun run() {
         Logger.info("Starting deobfuscator.")
         this.loadJar()
         this.runTransformers()
         this.exportJar()
+
+        stopwatch.stop()
+        Logger.info("Deobfuscator finished in ${stopwatch.elapsed(TimeUnit.SECONDS)} seconds.")
     }
 
     private fun loadJar() {
@@ -70,6 +73,9 @@ class Deobfuscator : CliktCommand(
         run { Renamer() }
         run { ControlFlow() }
         run { MethodSorter() }
+        run { FieldSorter() }
+        run { StaticFieldInliner() }
+        run { GotoRemover() }
 
         Logger.info("Finished running class transformers.")
     }
