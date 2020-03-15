@@ -7,6 +7,7 @@ import com.google.common.base.Stopwatch
 import me.kyleescobar.deobfuscator.asm.emptyClassGroup
 import me.kyleescobar.deobfuscator.asm.export
 import me.kyleescobar.deobfuscator.asm.loadJar
+import me.kyleescobar.deobfuscator.transform.MethodSorter
 import me.kyleescobar.deobfuscator.transform.Renamer
 import me.kyleescobar.deobfuscator.transform.Transformer
 import me.kyleescobar.deobfuscator.transform.controlflow.ControlFlow
@@ -68,6 +69,7 @@ class Deobfuscator : CliktCommand(
          */
         run { Renamer() }
         run { ControlFlow() }
+        run { MethodSorter() }
 
         Logger.info("Finished running class transformers.")
     }

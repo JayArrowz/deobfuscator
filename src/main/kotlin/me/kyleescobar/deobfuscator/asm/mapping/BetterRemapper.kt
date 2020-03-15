@@ -35,13 +35,14 @@ class BetterRemapper(
     }
 
     override fun mapMethodName(owner: String, name: String, descriptor: String): String {
+        var rname = name
         val h = hierarchy[owner] ?: return name
         if(h.superName != null && h.superName.length <= 2) mapMethodName(h.superName, name, descriptor).let { return it }
         if(h.interfaces != null && h.interfaces.any { it.length <= 2 }) h.interfaces.forEach { interf ->
             mapMethodName(interf, name, descriptor).let { return it }
         }
-        mappings[owner]?.let { it.methodMappings[name to descriptor] }?.let { return it }
-        return name
+        mappings[owner]?.let { it.methodMappings[name to descriptor] }?.apply { rname = this }
+        return rname
     }
 
     override fun mapFieldName(owner: String, name: String, descriptor: String): String {
